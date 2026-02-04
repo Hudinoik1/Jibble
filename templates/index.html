@@ -28,14 +28,28 @@
 
       <form class="card" method="post">
         <label class="field">
-          <span>Jibble API key</span>
+          <span>Jibble API key (token)</span>
           <input
             type="password"
             name="api_key"
             placeholder="Paste your API key"
-            required
           />
         </label>
+        <div class="field">
+          <span>Or use API key ID + secret</span>
+          <div class="field-row">
+            <input
+              type="text"
+              name="api_key_id"
+              placeholder="API key ID"
+            />
+            <input
+              type="password"
+              name="api_key_secret"
+              placeholder="API key secret"
+            />
+          </div>
+        </div>
         <label class="field">
           <span>Base API URL (optional)</span>
           <input

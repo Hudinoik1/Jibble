@@ -19,9 +19,25 @@
           <input type="date" name="date" value="{{ date_value }}" />
         </label>
         <label class="field">
-          <span>API key</span>
-          <input type="password" name="api_key" placeholder="API key" required />
+          <span>API key (token)</span>
+          <input type="password" name="api_key" placeholder="API key" />
         </label>
+        <div class="field">
+          <span>Or API key ID + secret</span>
+          <div class="field-row">
+            <input
+              type="text"
+              name="api_key_id"
+              placeholder="API key ID"
+              value="{{ api_key_id }}"
+            />
+            <input
+              type="password"
+              name="api_key_secret"
+              placeholder="API key secret"
+            />
+          </div>
+        </div>
         <label class="field">
           <span>Base API URL</span>
           <input type="text" name="base_url" value="{{ base_url }}" />
