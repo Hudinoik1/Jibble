@@ -3,7 +3,7 @@
 A lightweight Flask app that connects to the Jibble API and generates daily work reports per person.
 
 ## Features
-- Enter Jibble API credentials (token or API key ID + secret) and optionally a custom base URL (defaults to `https://api.jibble.io/api/v1`).
+- Enter Jibble API credentials and optionally a custom base URL.
 - Pick any date and refresh reports on demand.
 - Per-person tables showing property, time in/out, totals, and an 8-hour balance.
 
@@ -29,5 +29,5 @@ This repo includes a `render.yaml` so you can deploy quickly:
 Set a `FLASK_SECRET` environment variable in Render for session security.
 
 ## Notes
-- The app supports either a Jibble API token or API key ID + secret with access to `people` and `time_entries` endpoints.
+- The app expects a Jibble API token with access to `people` and `time_entries` endpoints.
 - Property names are derived from `location`, `project`, or `note` fields when available.

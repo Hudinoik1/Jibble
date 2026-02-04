@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Iterable
 
 import requests
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 APP_TITLE = "Jibble Daily Work Report"
-DEFAULT_BASE_URL = "https://api.jibble.io/api/v1"
+DEFAULT_BASE_URL = "https://api.jibble.io/v2"
 STANDARD_DAY_HOURS = 8
 
 app = Flask(__name__)
@@ -75,10 +75,6 @@ def _extract_property(entry: dict[str, Any]) -> str:
 
 def _get_auth_headers(api_key: str) -> dict[str, str]:
     return {"Authorization": f"Bearer {api_key}", "Accept": "application/json"}
-
-
-def _get_basic_auth(api_key_id: str, api_key_secret: str) -> tuple[str, str]:
-    return api_key_id, api_key_secret
 
 
 def _fetch_people(session: requests.Session, base_url: str) -> list[dict[str, Any]]:
@@ -157,22 +153,16 @@ def _build_report(
 def index() -> str:
     if request.method == "POST":
         api_key = request.form.get("api_key", "").strip()
-        api_key_id = request.form.get("api_key_id", "").strip()
-        api_key_secret = request.form.get("api_key_secret", "").strip()
         base_url = request.form.get("base_url", DEFAULT_BASE_URL).strip()
         date_value = request.form.get("date", "").strip()
-        if not api_key and not (api_key_id and api_key_secret):
-            flash("Enter your Jibble API key or API key ID/secret to continue.")
+        if not api_key:
+            flash("Enter your Jibble API key to continue.")
             return redirect(url_for("index"))
         if not date_value:
             date_value = datetime.now().strftime("%Y-%m-%d")
 
         session = requests.Session()
-        if api_key_id and api_key_secret:
-            session.auth = _get_basic_auth(api_key_id, api_key_secret)
-            session.headers.update({"Accept": "application/json"})
-        else:
-            session.headers.update(_get_auth_headers(api_key))
+        session.headers.update(_get_auth_headers(api_key))
 
         try:
             people = _fetch_people(session, base_url)
@@ -191,7 +181,6 @@ def index() -> str:
             reports=reports,
             date_value=date_value,
             base_url=base_url,
-            api_key_id=api_key_id,
         )
 
     return render_template(
@@ -199,7 +188,6 @@ def index() -> str:
         title=APP_TITLE,
         date_value=datetime.now().strftime("%Y-%m-%d"),
         base_url=DEFAULT_BASE_URL,
-        api_key_id="",
     )
 
 

@@ -64,12 +64,6 @@ body {
   font-weight: 600;
 }
 
-.field-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-}
-
 .field span {
   font-size: 14px;
   color: var(--muted);
