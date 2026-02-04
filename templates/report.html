@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>{{ title }}</h1>
+        <p>Showing data for {{ date_value }} from {{ base_url }}.</p>
+      </header>
+
+      <form class="card inline" method="post" action="{{ url_for('index') }}">
+        <label class="field">
+          <span>Change date</span>
+          <input type="date" name="date" value="{{ date_value }}" />
+        </label>
+        <label class="field">
+          <span>API key</span>
+          <input type="password" name="api_key" placeholder="API key" required />
+        </label>
+        <label class="field">
+          <span>Base API URL</span>
+          <input type="text" name="base_url" value="{{ base_url }}" />
+        </label>
+        <button type="submit" class="primary">Refresh</button>
+      </form>
+
+      {% for report in reports %}
+        <section class="report">
+          <h2>{{ report.person_name }} - Daily Work Report ({{ report.date_label }})</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in report.rows %}
+                <tr>
+                  <td>{{ row.property_name }}</td>
+                  <td>{{ row.time_in }}</td>
+                  <td>{{ row.time_out }}</td>
+                  <td>{{ row.total }}</td>
+                </tr>
+              {% endfor %}
+              <tr class="summary">
+                <td></td>
+                <td></td>
+                <td>Total Worked:</td>
+                <td>{{ report.total_worked }}</td>
+              </tr>
+              <tr class="summary">
+                <td></td>
+                <td></td>
+                <td>Balance ({{ 8 }} - total):</td>
+                <td>{{ report.balance }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      {% endfor %}
+    </main>
+  </body>
+</html>
