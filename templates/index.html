@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>{{ title }}</h1>
+        <p>
+          Enter your Jibble API credentials and pick a date to generate daily work
+          reports for every person.
+        </p>
+      </header>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form class="card" method="post">
+        <label class="field">
+          <span>Jibble API key</span>
+          <input
+            type="password"
+            name="api_key"
+            placeholder="Paste your API key"
+            required
+          />
+        </label>
+        <label class="field">
+          <span>Base API URL (optional)</span>
+          <input
+            type="text"
+            name="base_url"
+            value="{{ base_url }}"
+          />
+        </label>
+        <label class="field">
+          <span>Date</span>
+          <input type="date" name="date" value="{{ date_value }}" />
+        </label>
+        <button type="submit" class="primary">Generate report</button>
+      </form>
+
+      <section class="help">
+        <h2>What you will get</h2>
+        <ul>
+          <li>Daily work report per person with property, time in/out, and totals.</li>
+          <li>Automatic totals and an 8-hour balance summary.</li>
+          <li>Change the date at any time and re-run the report.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
